@@ -59,12 +59,19 @@ Original data imported from Excel:
 * Products
 * Returns
 
-### 🔹 2. Master Layer (`sales_master`)
+### 🔹 2. Clean Layer (`cleaned_tables`)
+
+* Altering data types
+* Validating data logic
+* Checking NULLs
+* Handling missing values
+
+### 🔹 3. Master Layer (`sales_master`)
 
 * Combines all tables using joins
 * Acts as a **single source of truth**
 
-### 🔹 3. Enriched Layer (`sales_enriched`)
+### 🔹 4. Enriched Layer (`sales_view`)
 
 Derived features created:
 
@@ -74,14 +81,14 @@ Derived features created:
 * Customer Age & Age Group
 * Return Flag
 
-### 🔹 4. KPI Layer
+### 🔹 5. KPI Layer
 
 Predefined views for:
 
 * Core metrics
 * Advanced KPIs
 
-### 🔹 5. Analytics Layer
+### 🔹 6. Analytics Layer
 
 Business-focused analysis:
 
@@ -157,7 +164,7 @@ Business-focused analysis:
 * Repeat customers form a crucial segment for **stable revenue generation**
 * Specific customer age groups show higher spending patterns
 
-## 📊 Dashboard (Optional)
+<!-- ## 📊 Dashboard (Optional)
 
 A dashboard can be built using Excel including:
 
@@ -165,7 +172,7 @@ A dashboard can be built using Excel including:
 * Monthly revenue trends
 * Customer segmentation visuals
 * Product performance charts
-* Return impact analysis
+* Return impact analysis -->
 
 ## 🚀 Business Impact
 
@@ -196,12 +203,12 @@ sales-intelligence-system/
 └── README.md
 ```
 
-## 🧩 Future Improvements
+<!-- ## 🧩 Future Improvements
 
 * Automate data pipeline using scheduled jobs
 * Implement incremental data loading
 * Add forecasting models for revenue prediction
-* Integrate real-time dashboards
+* Integrate real-time dashboards -->
 
 ## 💡 Key Learnings
 
