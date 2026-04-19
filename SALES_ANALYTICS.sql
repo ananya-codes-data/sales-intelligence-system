@@ -205,7 +205,32 @@ SELECT *
 FROM sales_master_table
 WHERE Return_Qty > Order_Qty;
 
-----------------------------------------------------------------------------------------------------------------------------------
+-- checking if null exists post merging
+SELECT *
+FROM sales_master_table
+WHERE 
+	Customer_ID IS NULL
+	OR
+	Product_ID IS NULL
+	OR
+	Return_ID IS NULL;
+-- turns out the return table post merging contains nulls
+
+-- handling missing values
+UPDATE sales_master_table
+SET Return_Qty = (CASE
+					WHEN Return_Qty IS NULL THEN 0
+					ELSE Return_Qty
+				END);
+
+UPDATE sales_master_table
+SET Return_Amount = (CASE
+					WHEN Return_Amount IS NULL THEN 0
+					ELSE Return_Amount
+				END);
+
+--------------------------------------------------------------------------------------------------------------------------
+-- Q2. DATA TRANSFORMATION
 
 -- Q2.1 Convert Order_Date and Delivery_Date into proper date format 
 
@@ -214,10 +239,45 @@ SELECT
 	CAST(Delivery_Date AS DATE) AS Delivery_Date
 FROM sales_master_table;
 
--- 2.2 Extract Year, Month, Quarter from Order_Date
+-- Q2.2 Extract Year, Month, Quarter from Order_Date
 
 SELECT
 	YEAR(Order_Date) AS Year_Order_Date,
 	MONTH(Order_Date) AS Month_Order_Date,
 	CONCAT('Q', DATEPART(QUARTER, Order_Date)) AS Quarter_Order_Date
+FROM sales_master_table;
+
+-- Q2.3 Order_Delivery_Days = Delivery_Date – Order_Date
+
+SELECT
+	DATEDIFF(DAY, Order_Date, Delivery_Date) AS Order_Delivery_Days
+FROM sales_master_table;
+
+-- Q2.4 Create Age column from Customer_Date_of_Birth
+
+SELECT
+	DATEDIFF(YEAR, Customer_Date_of_Birth, GETDATE()) AS Age
+FROM sales_master_table;
+
+-- Q2.5 Create Age Group
+
+SELECT
+	CASE
+		WHEN DATEDIFF(YEAR, Customer_Date_of_Birth, GETDATE()) > 60 THEN 'Senior'
+		WHEN DATEDIFF(YEAR, Customer_Date_of_Birth, GETDATE()) > 40 THEN 'Mid_Age'
+		WHEN DATEDIFF(YEAR, Customer_Date_of_Birth, GETDATE()) > 25 THEN 'Adult'
+		ELSE 'Youth'
+	END AS Age_Group
+FROM sales_master_table;
+
+-- Q2.6 Net Selling Price = Selling Price – Discount
+
+SELECT
+	FORMAT((Selling_Price - Discount), 'C0', 'INR-IN') AS net_selling_price
+FROM sales_master_table;
+
+-- 2.7 Total Sales Revenue= Order_Qty × Net Selling Price
+
+SELECT
+	FORMAT((Order_Qty * (Selling_Price - Discount)), 'C0', 'INR-IN') AS total_sales_revenue
 FROM sales_master_table;
